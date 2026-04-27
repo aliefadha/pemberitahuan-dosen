@@ -1,60 +1,43 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0 text-gray-800">
-            <i class="fas fa-file-alt mr-2"></i>{{ __('Dokumen') }}
-        </h2>
+        <i class="fas fa-file-alt mr-2"></i>{{ __('Dokumen') }}
     </x-slot>
 
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif
-
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Daftar Dokumen</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
+    <div class="card">
+        <div class="card-header">Daftar Dokumen</div>
+        <div class="card-body !p-0">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th>No</th>
-                            <th>Judul</th>
-                            <th>Deskripsi</th>
-                            <th>Tipe</th>
-                            <th>Deadline</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">No</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Judul</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Deskripsi</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Tipe</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Deadline</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-100 bg-white">
                         @forelse($dokumens as $dokumen)
-                        @php
-                            $submission = $userSubmissions->get($dokumen->id);
-                        @endphp
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $dokumen->judul }}</td>
-                            <td>{{ $dokumen->deskripsi ?? '-' }}</td>
-                            <td>
-                                <span class="badge badge-{{ $dokumen->tipe_dokumen == 'pdf' ? 'danger' : 'info' }}">
+                        @php $submission = $userSubmissions->get($dokumen->id); @endphp
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 text-gray-600">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-4 font-medium text-gray-900">{{ $dokumen->judul }}</td>
+                            <td class="px-6 py-4 text-gray-500">{{ $dokumen->deskripsi ?? '-' }}</td>
+                            <td class="px-6 py-4">
+                                <span class="badge {{ $dokumen->tipe_dokumen == 'pdf' ? 'badge-danger' : 'badge-info' }}">
                                     {{ strtoupper($dokumen->tipe_dokumen) }}
                                 </span>
                             </td>
-                            <td>
-                                {{ $dokumen->tanggal_deadline->format('d/m/Y H:i') }}
-                                @if($dokumen->isDeadlinePassed())
-                                    <span class="badge badge-secondary">Expired</span>
-                                @else
-                                    <span class="badge badge-success">Aktif</span>
-                                @endif
+                            <td class="px-6 py-4">
+                                <div class="text-gray-700">{{ $dokumen->tanggal_deadline->format('d/m/Y H:i') }}</div>
+                                <span class="badge mt-1 {{ $dokumen->isDeadlinePassed() ? 'badge-secondary' : 'badge-success' }}">
+                                    {{ $dokumen->isDeadlinePassed() ? 'Expired' : 'Aktif' }}
+                                </span>
                             </td>
-                            <td>
+                            <td class="px-6 py-4">
                                 @if($submission)
                                     @if($submission->isPending())
                                         <span class="badge badge-warning">Pending</span>
@@ -64,29 +47,29 @@
                                         <span class="badge badge-danger">Ditolak</span>
                                     @endif
                                     @if($submission->catatan)
-                                        <br><small class="text-muted">{{ $submission->catatan }}</small>
+                                        <div class="text-xs text-gray-400 mt-1">{{ $submission->catatan }}</div>
                                     @endif
                                 @else
                                     <span class="badge badge-secondary">Belum Submit</span>
                                 @endif
                             </td>
-                            <td>
+                            <td class="px-6 py-4">
                                 @if(!$dokumen->isDeadlinePassed())
-                                    <a href="{{ route('dokumens.submit', $dokumen) }}" class="btn btn-{{ $submission ? 'info' : 'primary' }} btn-sm">
+                                    <a href="{{ route('dokumens.submit', $dokumen) }}" class="btn-sm {{ $submission ? 'btn-info' : 'btn-primary' }}">
                                         <i class="fas fa-upload mr-1"></i> {{ $submission ? 'Update' : 'Submit' }}
                                     </a>
                                 @elseif($submission)
-                                    <a href="{{ route('dokumens.submit', $dokumen) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('dokumens.submit', $dokumen) }}" class="btn-info btn-sm">
                                         <i class="fas fa-eye mr-1"></i> Lihat
                                     </a>
                                 @else
-                                    <span class="text-muted">Deadline passed</span>
+                                    <span class="text-xs text-gray-400">Deadline passed</span>
                                 @endif
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="text-center">Tidak ada dokumen.</td>
+                            <td colspan="7" class="px-6 py-10 text-center text-gray-400">Tidak ada dokumen.</td>
                         </tr>
                         @endforelse
                     </tbody>

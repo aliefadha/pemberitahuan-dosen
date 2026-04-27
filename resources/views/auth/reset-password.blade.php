@@ -1,40 +1,32 @@
 <x-guest-layout title="Reset Password">
-    <form method="POST" action="{{ route('password.store') }}" class="user">
+    <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <div class="form-group">
-            <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror"
-                id="exampleInputEmail" placeholder="Email Address" name="email" value="{{ old('email', $request->email) }}" required autocomplete="username">
-            @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+        <div class="mb-4">
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $request->email)" placeholder="Email Address" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
-        <div class="form-group row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror"
-                    id="exampleInputPassword" placeholder="Password" name="password" required autocomplete="new-password">
-                @error('password')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <div>
+                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password')" class="mt-1" />
             </div>
-            <div class="col-sm-6">
-                <input type="password" class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
-                    id="exampleRepeatPassword" placeholder="Repeat Password" name="password_confirmation" required autocomplete="new-password">
-                @error('password_confirmation')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div>
+                <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" placeholder="Repeat Password" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-user btn-block">
+        <button type="submit" class="btn-primary w-full">
             Reset Password
         </button>
     </form>
-    <hr>
-    <div class="text-center">
-        <a class="small" href="{{ route('login') }}">Back to Login</a>
+
+    <hr class="my-6 border-gray-200">
+    <div class="text-center text-sm">
+        <a class="text-primary-600 hover:text-primary-800" href="{{ route('login') }}">Back to Login</a>
     </div>
 </x-guest-layout>

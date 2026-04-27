@@ -1,20 +1,17 @@
 <x-guest-layout title="Confirm Password">
-    <div class="mb-4 text-sm text-gray-600">
+    <p class="mb-4 text-sm text-gray-600">
         This is a secure area of the application. Please confirm your password before continuing.
-    </div>
+    </p>
 
-    <form method="POST" action="{{ route('password.confirm') }}" class="user">
+    <form method="POST" action="{{ route('password.confirm') }}">
         @csrf
 
-        <div class="form-group">
-            <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror"
-                id="exampleInputPassword" placeholder="Password" name="password" required autocomplete="current-password">
-            @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+        <div class="mb-5">
+            <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" required autocomplete="current-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-1" />
         </div>
 
-        <button type="submit" class="btn btn-primary btn-user btn-block">
+        <button type="submit" class="btn-primary w-full">
             Confirm
         </button>
     </form>

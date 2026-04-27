@@ -1,58 +1,48 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0 text-gray-800">
-            <i class="fas fa-plus mr-2"></i>{{ __('Tambah Dokumen') }}
-        </h2>
+        <i class="fas fa-plus mr-2"></i>{{ __('Tambah Dokumen') }}
     </x-slot>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Form Tambah Dokumen</h6>
-        </div>
+    <div class="card">
+        <div class="card-header">Form Tambah Dokumen</div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.dokumens.store') }}">
                 @csrf
 
-                <div class="form-group">
-                    <label for="judul">Judul Dokumen</label>
-                    <input type="text" class="form-control @error('judul') is-invalid @enderror" id="judul" name="judul" value="{{ old('judul') }}" required autofocus>
-                    @error('judul')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                <div class="mb-5">
+                    <x-input-label for="judul" value="Judul Dokumen" />
+                    <x-text-input id="judul" name="judul" type="text" class="mt-1 block w-full" :value="old('judul')" required autofocus />
+                    <x-input-error :messages="$errors->get('judul')" class="mt-1" />
                 </div>
 
-                <div class="form-group">
-                    <label for="deskripsi">Deskripsi</label>
-                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" rows="3">{{ old('deskripsi') }}</textarea>
-                    @error('deskripsi')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                <div class="mb-5">
+                    <x-input-label for="deskripsi" value="Deskripsi" />
+                    <textarea id="deskripsi" name="deskripsi" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm @error('deskripsi') border-red-300 text-red-900 @enderror">{{ old('deskripsi') }}</textarea>
+                    <x-input-error :messages="$errors->get('deskripsi')" class="mt-1" />
                 </div>
 
-                <div class="form-group">
-                    <label for="tipe_dokumen">Tipe Dokumen</label>
-                    <select class="form-control @error('tipe_dokumen') is-invalid @enderror" id="tipe_dokumen" name="tipe_dokumen" required>
+                <div class="mb-5">
+                    <x-input-label for="tipe_dokumen" value="Tipe Dokumen" />
+                    <select id="tipe_dokumen" name="tipe_dokumen" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm @error('tipe_dokumen') border-red-300 text-red-900 @enderror">
                         <option value="">-- Pilih Tipe --</option>
                         <option value="pdf" {{ old('tipe_dokumen') == 'pdf' ? 'selected' : '' }}>PDF</option>
                         <option value="docx" {{ old('tipe_dokumen') == 'docx' ? 'selected' : '' }}>DOCX</option>
                     </select>
-                    @error('tipe_dokumen')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <x-input-error :messages="$errors->get('tipe_dokumen')" class="mt-1" />
                 </div>
 
-                <div class="form-group">
-                    <label for="tanggal_deadline">Tanggal Deadline</label>
-                    <input type="datetime-local" class="form-control @error('tanggal_deadline') is-invalid @enderror" id="tanggal_deadline" name="tanggal_deadline" value="{{ old('tanggal_deadline') }}" required>
-                    @error('tanggal_deadline')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                <div class="mb-5">
+                    <x-input-label for="tanggal_deadline" value="Tanggal Deadline" />
+                    <x-text-input id="tanggal_deadline" name="tanggal_deadline" type="datetime-local" class="mt-1 block w-full" :value="old('tanggal_deadline')" required />
+                    <x-input-error :messages="$errors->get('tanggal_deadline')" class="mt-1" />
                 </div>
 
-                <hr>
+                <hr class="my-6 border-gray-200">
 
-                <a href="{{ route('admin.dokumens.index') }}" class="btn btn-secondary">Kembali</a>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('admin.dokumens.index') }}" class="btn-secondary">Kembali</a>
+                    <button type="submit" class="btn-primary">Simpan</button>
+                </div>
             </form>
         </div>
     </div>

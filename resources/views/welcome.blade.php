@@ -1,52 +1,327 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Pemberitahuan Dosen') }}</title>
-    <link href="{{ asset('vendor/sb-admin-2/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link href="{{ asset('vendor/sb-admin-2/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <title>Sistem Monitoring Pengumpulan RPS dan Soal Ujian | D-III Teknik Komputer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gradient-primary">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="p-5 text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Pemberitahuan Dosen</h1>
-                                    <p class="mb-4">Sistem Informasi Pemberitahuan untuk Dosen</p>
-                                    @if (Route::has('login'))
-                                        @auth
-                                            <a href="{{ url('/dashboard') }}" class="btn btn-primary btn-user btn-block">
-                                                Dashboard
-                                            </a>
-                                        @else
-                                            <a href="{{ route('login') }}" class="btn btn-primary btn-user btn-block">
-                                                Login
-                                            </a>
-                                            @if (Route::has('register'))
-                                                <a href="{{ route('register') }}" class="btn btn-secondary btn-user btn-block">
-                                                    Register
-                                                </a>
-                                            @endif
-                                        @endauth
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
+<body class="font-sans antialiased text-gray-700 bg-white">
+
+    {{-- Navbar --}}
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-600">
+                        <i class="fas fa-bell text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-xl text-gray-900">Monitoring RPS & Soal Ujian</span>
+                </div>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="#tentang-prodi" class="text-sm font-medium text-gray-500 hover:text-primary-600 transition">Tentang Prodi</a>
+                    <a href="#fitur" class="text-sm font-medium text-gray-500 hover:text-primary-600 transition">Fitur</a>
+                    <a href="#cara-kerja" class="text-sm font-medium text-gray-500 hover:text-primary-600 transition">Cara Kerja</a>
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="btn-primary">Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="text-sm font-medium text-gray-500 hover:text-primary-600 transition">Login</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="btn-primary">Daftar</a>
+                            @endif
+                        @endauth
+                    @endif
+                </div>
+                {{-- Mobile menu button --}}
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {{-- Mobile menu --}}
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-100">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#tentang-prodi" class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-md">Tentang Prodi</a>
+                <a href="#fitur" class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-md">Fitur</a>
+                <a href="#cara-kerja" class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-md">Cara Kerja</a>
+                @if (Route::has('login'))
+                    @guest
+                        <a href="{{ route('login') }}" class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-md">Login</a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="block px-3 py-2 text-base font-medium text-primary-600 hover:bg-primary-50 rounded-md">Daftar</a>
+                        @endif
+                    @endguest
+                @endif
+            </div>
+        </div>
+    </nav>
+
+    {{-- Hero Section --}}
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
+        <div class="absolute inset-0 -z-10">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary-50 rounded-full blur-3xl opacity-60"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-sm font-semibold mb-6">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-600"></span>
+                    </span>
+                    Notifikasi WhatsApp Real-time
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                    Sistem Monitoring Pengumpulan<br>
+                    <span class="text-primary-600">RPS dan Soal Ujian</span>
+                </h1>
+                <p class="mt-6 text-lg sm:text-xl text-gray-500 leading-relaxed">
+                    <span class="font-semibold text-gray-700">Program Studi D-III Teknik Komputer</span><br>
+                    <span class="text-primary-600 font-medium">Sekolah Tinggi Teknologi Payakumbuh</span><br class="hidden sm:block">
+                    Pantau pengumpulan Rencana Pembelajaran Semester (RPS) dan soal ujian dosen dengan notifikasi WhatsApp otomatis.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="btn-primary text-base px-8 py-3">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Ke Dashboard
+                            </a>
+                        @else
+                            <a href="{{ route('register') }}" class="btn-primary text-base px-8 py-3">
+                                <i class="fas fa-rocket mr-2"></i> Mulai Sekarang
+                            </a>
+                            <a href="{{ route('login') }}" class="btn-secondary text-base px-8 py-3">
+                                <i class="fas fa-sign-in-alt mr-2"></i> Login
+                            </a>
+                        @endauth
+                    @endif
+                </div>
+                <div class="mt-10 flex items-center justify-center gap-8 text-gray-400">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-shield-alt text-primary-500"></i>
+                        <span class="text-sm font-medium">Aman</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-bolt text-primary-500"></i>
+                        <span class="text-sm font-medium">Cepat</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-mobile-alt text-primary-500"></i>
+                        <span class="text-sm font-medium">Responsif</span>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="{{ asset('vendor/sb-admin-2/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/sb-admin-2/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('vendor/sb-admin-2/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('vendor/sb-admin-2/js/sb-admin-2.min.js') }}"></script>
+    </section>
+
+    {{-- About Prodi Section --}}
+    <section id="tentang-prodi" class="py-20 bg-gray-50/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-sm font-semibold mb-4">
+                        <i class="fas fa-university text-xs"></i>
+                        Tentang Program Studi
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+                        D-III Teknik Komputer<br>
+                        <span class="text-primary-600">STT Payakumbuh</span>
+                    </h2>
+                    <p class="text-gray-500 leading-relaxed mb-6">
+                        Program Studi D-III Teknik Komputer Sekolah Tinggi Teknologi Payakumbuh merupakan program studi dengan prospek cerah baik saat ini maupun di masa mendatang. Segala aspek dalam perkembangan teknologi tidak terlepas dari bidang komputerisasi.
+                    </p>
+                    <p class="text-gray-500 leading-relaxed mb-6">
+                        Program studi ini bertujuan untuk menghasilkan ahli madya teknik yang mampu mengembangkan ilmu yang dimiliki, menyelesaikan permasalahan komputer, serta memiliki dasar ilmu yang cukup untuk melanjutkan studi pada jenjang yang lebih tinggi.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg border border-gray-200 text-sm text-gray-600">
+                            <i class="fas fa-map-marker-alt text-primary-500 text-xs"></i>
+                            Payakumbuh, Sumatera Barat
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg border border-gray-200 text-sm text-gray-600">
+                            <i class="fas fa-globe text-primary-500 text-xs"></i>
+                            sttpyk.ac.id
+                        </span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+                        <div class="icon-circle bg-primary-50 text-primary-600 mx-auto mb-3">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 text-sm">Operator & Programmer</h4>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+                        <div class="icon-circle bg-emerald-50 text-emerald-600 mx-auto mb-3">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 text-sm">Teknisi Komputer</h4>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+                        <div class="icon-circle bg-amber-50 text-amber-600 mx-auto mb-3">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 text-sm">Jaringan Komputer</h4>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
+                        <div class="icon-circle bg-violet-50 text-violet-600 mx-auto mb-3">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900 text-sm">Robotika</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Features Section --}}
+    <section id="fitur" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-gray-900">Fitur Utama</h2>
+                <p class="mt-4 text-gray-500">Semua yang Anda butuhkan untuk mengelola dokumen dan komunikasi dosen dalam satu platform.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="group relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary-100 transition duration-300">
+                    <div class="icon-circle bg-emerald-50 text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fab fa-whatsapp text-lg"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Notifikasi WhatsApp</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Kirim pengingat otomatis langsung ke WhatsApp dosen. Terhubung dengan WhatsApp Web untuk pengiriman real-time.
+                    </p>
+                </div>
+                <div class="group relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary-100 transition duration-300">
+                    <div class="icon-circle bg-amber-50 text-amber-600 mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-chart-pie text-lg"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Dashboard Terpadu</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Tampilan statistik dan overview berbeda untuk Admin dan Dosen. Pantau progres pengumpulan dokumen dengan mudah.
+                    </p>
+                </div>
+                <div class="group relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary-100 transition duration-300">
+                    <div class="icon-circle bg-violet-50 text-violet-600 mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-history text-lg"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Riwayat Upload</h3>
+                    <p class="text-gray-500 leading-relaxed">
+                        Lacak seluruh riwayat pengumpulan dokumen. Admin dapat menerima atau menolak submission dengan catatan.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- How It Works --}}
+    <section id="cara-kerja" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl font-bold text-gray-900">Cara Kerja</h2>
+                <p class="mt-4 text-gray-500">Proses sederhana untuk mengelola dokumen dan notifikasi dalam tiga langkah mudah.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                {{-- Connecting line for desktop --}}
+                <div class="hidden md:block absolute top-16 left-[20%] right-[20%] h-0.5 bg-primary-100"></div>
+
+                <div class="relative text-center">
+                    <div class="relative z-10 mx-auto w-14 h-14 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold shadow-lg shadow-primary-200">
+                        1
+                    </div>
+                    <h3 class="mt-6 text-lg font-bold text-gray-900">Buat Dokumen</h3>
+                    <p class="mt-2 text-gray-500">Admin membuat dokumen baru dengan judul, deskripsi, tipe, dan tanggal deadline.</p>
+                </div>
+                <div class="relative text-center">
+                    <div class="relative z-10 mx-auto w-14 h-14 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold shadow-lg shadow-primary-200">
+                        2
+                    </div>
+                    <h3 class="mt-6 text-lg font-bold text-gray-900">Kumpulkan Submission</h3>
+                    <p class="mt-2 text-gray-500">Dosen mengumpulkan dokumen yang diminta sebelum deadline yang ditentukan.</p>
+                </div>
+                <div class="relative text-center">
+                    <div class="relative z-10 mx-auto w-14 h-14 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold shadow-lg shadow-primary-200">
+                        3
+                    </div>
+                    <h3 class="mt-6 text-lg font-bold text-gray-900">Kirim Notifikasi</h3>
+                    <p class="mt-2 text-gray-500">Kirim pengingat via WhatsApp atau pantau status pengumpulan melalui dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Footer --}}
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-600">
+                            <i class="fas fa-bell text-white text-sm"></i>
+                        </div>
+                        <span class="font-bold text-xl text-white">Monitoring RPS & Soal Ujian</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Sistem monitoring pengumpulan Rencana Pembelajaran Semester (RPS) dan soal ujian untuk dosen Program Studi D-III Teknik Komputer.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Tautan Cepat</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#tentang-prodi" class="hover:text-white transition">Tentang Prodi</a></li>
+                        <li><a href="#fitur" class="hover:text-white transition">Fitur</a></li>
+                        <li><a href="#cara-kerja" class="hover:text-white transition">Cara Kerja</a></li>
+                        @if (Route::has('login'))
+                            <li><a href="{{ route('login') }}" class="hover:text-white transition">Login</a></li>
+                        @endif
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Kontak Kami</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-university text-primary-500 mt-0.5"></i>
+                            <span>Sekolah Tinggi Teknologi Payakumbuh</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt text-primary-500 mt-0.5"></i>
+                            <span>Jl. Khatib Sulaiman, Sawah Padang, Payakumbuh Selatan, Kota Payakumbuh, Sumatera Barat</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-phone text-primary-500 mt-0.5"></i>
+                            <span>(+62) 823-8350-1827</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-envelope text-primary-500 mt-0.5"></i>
+                            <span>admin@sttpyk.ac.id</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-globe text-primary-500 mt-0.5"></i>
+                            <a href="https://www.sttpyk.ac.id" target="_blank" class="hover:text-white transition">www.sttpyk.ac.id</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-10 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+                &copy; {{ date('Y') }} Program Studi D-III Teknik Komputer, Sekolah Tinggi Teknologi Payakumbuh.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+    </script>
 </body>
 </html>

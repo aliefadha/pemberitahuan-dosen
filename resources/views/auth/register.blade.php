@@ -1,67 +1,51 @@
 <x-guest-layout title="Daftar Akun Baru">
-    <form method="POST" action="{{ route('register') }}" class="user">
+    <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user @error('name') is-invalid @enderror"
-                id="exampleFirstName" placeholder="Nama Lengkap" name="name" value="{{ old('name') }}" required autofocus autocomplete="name">
-            @error('name')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+        <div class="mb-4">
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" placeholder="Nama Lengkap" required autofocus autocomplete="name" />
+            <x-input-error :messages="$errors->get('name')" class="mt-1" />
         </div>
 
-        <div class="form-group">
-            <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror"
-                id="exampleInputEmail" placeholder="Alamat Email" name="email" value="{{ old('email') }}" required autocomplete="username">
-            @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+        <div class="mb-4">
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" placeholder="Alamat Email" required autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
-        <div class="form-group">
-            <input type="text" class="form-control form-control-user @error('no_telepon') is-invalid @enderror"
-                id="exampleInputPhone" placeholder="No. HP (WhatsApp)" name="no_telepon" value="{{ old('no_telepon') }}" autocomplete="tel">
-            @error('no_telepon')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-            <small class="form-text text-muted">Contoh: 081234567890</small>
+        <div class="mb-4">
+            <x-text-input id="no_telepon" name="no_telepon" type="text" class="mt-1 block w-full" :value="old('no_telepon')" placeholder="No. HP (WhatsApp)" autocomplete="tel" />
+            <x-input-error :messages="$errors->get('no_telepon')" class="mt-1" />
+            <p class="mt-1 text-xs text-gray-400">Contoh: 081234567890</p>
         </div>
 
         @if(auth()->check() && auth()->user()->isAdmin())
-        <div class="form-group">
-            <select class="form-control form-control-user @error('role') is-invalid @enderror" name="role">
+        <div class="mb-4">
+            <select name="role" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm @error('role') border-red-300 text-red-900 @enderror">
                 <option value="dosen" {{ old('role') == 'dosen' ? 'selected' : '' }}>Dosen</option>
                 <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
             </select>
-            @error('role')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <x-input-error :messages="$errors->get('role')" class="mt-1" />
         </div>
         @endif
 
-        <div class="form-group row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <input type="password" class="form-control form-control-user @error('password') is-invalid @enderror"
-                    id="exampleInputPassword" placeholder="Password" name="password" required autocomplete="new-password">
-                @error('password')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+        <div class="grid grid-cols-2 gap-3 mb-4">
+            <div>
+                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password')" class="mt-1" />
             </div>
-            <div class="col-sm-6">
-                <input type="password" class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
-                    id="exampleRepeatPassword" placeholder="Ulangi Password" name="password_confirmation" required autocomplete="new-password">
-                @error('password_confirmation')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div>
+                <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" placeholder="Ulangi Password" required autocomplete="new-password" />
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-user btn-block">
-            Daftar Akun
+        <button type="submit" class="btn-primary w-full">
+            <i class="fas fa-user-plus mr-2"></i> Daftar Akun
         </button>
     </form>
-    <hr>
-    <div class="text-center">
-        <a class="small" href="{{ route('login') }}">Sudah punya akun? Masuk!</a>
+
+    <hr class="my-6 border-gray-200">
+    <div class="text-center text-sm">
+        <a class="text-primary-600 hover:text-primary-800" href="{{ route('login') }}">Sudah punya akun? Masuk!</a>
     </div>
 </x-guest-layout>

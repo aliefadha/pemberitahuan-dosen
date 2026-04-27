@@ -1,78 +1,63 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0 text-gray-800">
-            <i class="fas fa-file-alt mr-2"></i>{{ __('Submission: ') }}{{ $dokumen->judul }}
-        </h2>
+        <i class="fas fa-file-alt mr-2"></i>{{ __('Submission: ') }}{{ $dokumen->judul }}
     </x-slot>
 
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif
-
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">
-                Detail Dokumen 
-            </h6>
+    <div class="card">
+        <div class="card-header flex flex-wrap items-center justify-between gap-3">
+            <span>Detail Dokumen</span>
             @php
                 $allDosen = \App\Models\User::where('role', 'dosen')->get();
                 $unsubmittedCount = $allDosen->filter(fn($d) => !$submissions->where('user_id', $d->id)->first() && $d->no_telepon)->count();
             @endphp
             @if($unsubmittedCount > 0)
-                <button type="button" class="btn btn-success btn-sm" onclick="sendBatchWhatsApp()">
+                <button type="button" class="btn-success btn-sm" onclick="sendBatchWhatsApp()">
                     <i class="fab fa-whatsapp mr-1"></i> Kirim WhatsApp
                 </button>
             @endif
         </div>
         <div class="card-body">
-            <div class="mb-4">
-                <strong>Judul:</strong> {{ $dokumen->judul }}<br>
-                <strong>Deskripsi:</strong> {{ $dokumen->deskripsi ?? '-' }}<br>
-                <strong>Tipe:</strong> {{ strtoupper($dokumen->tipe_dokumen) }}<br>
-                <strong>Deadline:</strong> {{ $dokumen->tanggal_deadline->format('d/m/Y H:i') }}
-                @if($dokumen->isDeadlinePassed())
-                    <span class="badge badge-secondary">Expired</span>
-                @else
-                    <span class="badge badge-success">Aktif</span>
-                @endif
+            <div class="mb-6 space-y-1 text-sm">
+                <p><strong>Judul:</strong> {{ $dokumen->judul }}</p>
+                <p><strong>Deskripsi:</strong> {{ $dokumen->deskripsi ?? '-' }}</p>
+                <p><strong>Tipe:</strong> {{ strtoupper($dokumen->tipe_dokumen) }}</p>
+                <p>
+                    <strong>Deadline:</strong> {{ $dokumen->tanggal_deadline->format('d/m/Y H:i') }}
+                    <span class="badge ml-2 {{ $dokumen->isDeadlinePassed() ? 'badge-secondary' : 'badge-success' }}">
+                        {{ $dokumen->isDeadlinePassed() ? 'Expired' : 'Aktif' }}
+                    </span>
+                </p>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
                         <tr>
-                            <th>No</th>
-                            <th>Nama Dosen</th>
-                            <th>Email</th>
-                            <th>No. HP</th>
-                            <th>Status</th>
-                            <th>Tanggal Submit</th>
-                            <th>File</th>
-                            <th>Aksi</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">No</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Nama Dosen</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Email</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">No. HP</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Tgl Submit</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">File</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-100 bg-white">
                         @foreach($allDosen as $dosen)
-                        @php
-                            $submission = $submissions->where('user_id', $dosen->id)->first();
-                        @endphp
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $dosen->name }}</td>
-                            <td>{{ $dosen->email }}</td>
-                            <td>
+                        @php $submission = $submissions->where('user_id', $dosen->id)->first(); @endphp
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 text-gray-600">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-3 font-medium text-gray-900">{{ $dosen->name }}</td>
+                            <td class="px-4 py-3 text-gray-600">{{ $dosen->email }}</td>
+                            <td class="px-4 py-3">
                                 @if($dosen->no_telepon)
-                                    <span class="text-success">{{ $dosen->no_telepon }}</span>
+                                    <span class="text-emerald-600">{{ $dosen->no_telepon }}</span>
                                 @else
-                                    <span class="text-muted">-</span>
+                                    <span class="text-gray-400">-</span>
                                 @endif
                             </td>
-                            <td>
+                            <td class="px-4 py-3">
                                 @if($submission)
                                     @if($submission->isPending())
                                         <span class="badge badge-warning">Pending</span>
@@ -82,70 +67,67 @@
                                         <span class="badge badge-danger">Ditolak</span>
                                     @endif
                                     @if($submission->catatan)
-                                        <br><small class="text-muted">{{ $submission->catatan }}</small>
+                                        <div class="text-xs text-gray-400 mt-1">{{ $submission->catatan }}</div>
                                     @endif
                                 @else
                                     <span class="badge badge-secondary">Belum Submit</span>
                                 @endif
                             </td>
-                            <td>
-                                @if($submission)
-                                    {{ $submission->tanggal_submit->format('d/m/Y H:i') }}
-                                @else
-                                    -
-                                @endif
+                            <td class="px-4 py-3 text-gray-600 text-xs">
+                                @if($submission) {{ $submission->tanggal_submit->format('d/m/Y H:i') }} @else - @endif
                             </td>
-                            <td>
+                            <td class="px-4 py-3">
                                 @if($submission)
-                                    <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="btn btn-info btn-sm">
+                                    <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="btn-info btn-sm">
                                         <i class="fas fa-download"></i>
                                     </a>
                                 @else
-                                    -
+                                    <span class="text-gray-400 text-xs">-</span>
                                 @endif
                             </td>
-                            <td>
+                            <td class="px-4 py-3">
                                 @if($submission && $submission->isPending())
-                                    <div class="d-flex flex-column gap-1">
+                                    <div class="flex flex-col gap-1.5">
                                         <form method="POST" action="{{ route('admin.dokumens.submissions.accept', [$dokumen, $submission->id]) }}">
                                             @csrf
                                             <input type="hidden" name="catatan" value="">
-                                            <button type="submit" class="btn btn-success btn-sm btn-block">
+                                            <button type="submit" class="btn-success btn-sm w-full">
                                                 <i class="fas fa-check mr-1"></i> Accept
                                             </button>
                                         </form>
-                                        <button type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#rejectModal{{ $submission->id }}">
+                                        <button type="button" class="btn-danger btn-sm w-full" x-data
+                                            x-on:click="$dispatch('open-modal', 'reject-modal-{{ $submission->id }}')">
                                             <i class="fas fa-times mr-1"></i> Reject
                                         </button>
                                     </div>
 
-                                    <div class="modal fade" id="rejectModal{{ $submission->id }}" tabindex="-1" role="dialog">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Tolak Submission</h5>
-                                                    <button type="button" class="close" data-dismiss="modal">
-                                                        <span>&times;</span>
+                                    {{-- Reject Modal --}}
+                                    <div x-data="{ show: false }" x-on:open-modal.window="if ($event.detail === 'reject-modal-{{ $submission->id }}') show = true" x-on:close-modal.window="if ($event.detail === 'reject-modal-{{ $submission->id }}') show = false">
+                                        <div x-show="show" x-cloak class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:px-0">
+                                            <div x-show="show" class="fixed inset-0 bg-gray-500/75" x-on:click="show = false"></div>
+                                            <div x-show="show" class="relative z-50 mx-auto max-w-md rounded-xl bg-white shadow-xl">
+                                                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                                                    <h3 class="text-lg font-semibold text-gray-900">Tolak Submission</h3>
+                                                    <button class="text-gray-400 hover:text-gray-600" x-on:click="show = false">
+                                                        <i class="fas fa-times"></i>
                                                     </button>
                                                 </div>
                                                 <form method="POST" action="{{ route('admin.dokumens.submissions.reject', [$dokumen, $submission->id]) }}">
                                                     @csrf
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label for="catatan">Catatan</label>
-                                                            <textarea class="form-control" name="catatan" rows="3"></textarea>
-                                                        </div>
+                                                    <div class="px-6 py-4">
+                                                        <label for="catatan-{{ $submission->id }}" class="block text-sm font-medium text-gray-700">Catatan</label>
+                                                        <textarea id="catatan-{{ $submission->id }}" name="catatan" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"></textarea>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                        <button type="submit" class="btn btn-danger">Tolak</button>
+                                                    <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
+                                                        <button type="button" x-on:click="show = false" class="btn-secondary">Batal</button>
+                                                        <button type="submit" class="btn-danger">Tolak</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                 @else
-                                    -
+                                    <span class="text-gray-400 text-xs">-</span>
                                 @endif
                             </td>
                         </tr>
@@ -154,8 +136,10 @@
                 </table>
             </div>
 
-            <hr>
-            <a href="{{ route('admin.dokumens.index') }}" class="btn btn-secondary">Kembali</a>
+            <hr class="my-6 border-gray-200">
+            <a href="{{ route('admin.dokumens.index') }}" class="btn-secondary">
+                <i class="fas fa-arrow-left mr-1"></i> Kembali
+            </a>
         </div>
     </div>
 
@@ -163,7 +147,7 @@
     <script>
         function sendBatchWhatsApp() {
             const message = `Halo! untuk segera mengumpulkan dokumen "{{ $dokumen->judul }}" sebelum deadline. Mohon segera upload dokumen Anda. Terima kasih.`;
-            
+
             const recipients = [];
             @foreach($allDosen as $dosen)
                 @if(!$submissions->where('user_id', $dosen->id)->first() && $dosen->no_telepon)

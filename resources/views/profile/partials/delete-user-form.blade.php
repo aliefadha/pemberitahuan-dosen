@@ -1,37 +1,36 @@
-<div class="mb-0">
-    <p class="text-gray-600 mb-3">
+<div x-data="{ show: false }">
+    <p class="text-sm text-gray-600 mb-4">
         Once your account is deleted, all of its resources and data will be permanently deleted.
     </p>
 
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+    <button type="button" class="btn-danger" x-on:click="show = true">
         Delete Account
     </button>
-</div>
 
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Account?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+    {{-- Delete Modal --}}
+    <div x-show="show" x-cloak class="fixed inset-0 z-50 overflow-y-auto px-4 py-6 sm:px-0">
+        <div x-show="show" class="fixed inset-0 bg-gray-500/75" x-on:click="show = false"></div>
+        <div x-show="show" class="relative z-50 mx-auto max-w-md rounded-xl bg-white shadow-xl">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">Delete Account?</h3>
+                <button class="text-gray-400 hover:text-gray-600" x-on:click="show = false">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
             <form method="post" action="{{ route('profile.destroy') }}">
                 @csrf
                 @method('delete')
-                <div class="modal-body">
-                    <p>Please enter your password to confirm you would like to permanently delete your account.</p>
-                    <div class="form-group">
-                        <input type="password" class="form-control @error('password', 'userDeletion') is-invalid @enderror" id="password" name="password" placeholder="Password" autocomplete="current-password">
-                        @error('password', 'userDeletion')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                <div class="px-6 py-4">
+                    <p class="text-sm text-gray-600 mb-4">Please enter your password to confirm you would like to permanently delete your account.</p>
+                    <div>
+                        <x-input-label for="password" value="Password" />
+                        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" autocomplete="current-password" />
+                        <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-1" />
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3">
+                    <button type="button" x-on:click="show = false" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-danger">Delete Account</button>
                 </div>
             </form>
         </div>

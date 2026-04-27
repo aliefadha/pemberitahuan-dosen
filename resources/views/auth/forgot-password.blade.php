@@ -1,28 +1,25 @@
 <x-guest-layout title="Forgot Password">
-    <div class="mb-4 text-sm text-gray-600">
+    <p class="mb-4 text-sm text-gray-600">
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset link.
-    </div>
+    </p>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('password.email') }}" class="user">
+    <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
-        <div class="form-group">
-            <input type="email" class="form-control form-control-user @error('email') is-invalid @enderror"
-                id="exampleInputEmail" aria-describedby="emailHelp"
-                placeholder="Enter Email Address..." name="email" value="{{ old('email') }}" required autofocus autocomplete="username">
-            @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+        <div class="mb-5">
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" placeholder="Enter Email Address..." required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
-        <button type="submit" class="btn btn-primary btn-user btn-block">
+        <button type="submit" class="btn-primary w-full">
             Email Password Reset Link
         </button>
     </form>
-    <hr>
-    <div class="text-center">
-        <a class="small" href="{{ route('login') }}">Back to Login</a>
+
+    <hr class="my-6 border-gray-200">
+    <div class="text-center text-sm">
+        <a class="text-primary-600 hover:text-primary-800" href="{{ route('login') }}">Back to Login</a>
     </div>
 </x-guest-layout>
