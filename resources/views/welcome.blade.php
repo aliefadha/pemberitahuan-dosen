@@ -66,25 +66,26 @@
 
     {{-- Hero Section --}}
     <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-        <div class="absolute inset-0 -z-10">
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary-50 rounded-full blur-3xl opacity-60"></div>
+        <div class="absolute inset-0 -z-10 overflow-hidden">
+            <img src="{{ asset('hero.jpeg') }}" alt="Hero Background" class="w-full h-full object-cover blur-sm">
+            <div class="absolute inset-0 bg-black/30"></div>
         </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-sm font-semibold mb-6">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold mb-6 backdrop-blur-sm">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-600"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-400"></span>
                     </span>
                     Notifikasi WhatsApp Real-time
                 </div>
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
                     Sistem Monitoring Pengumpulan<br>
-                    <span class="text-primary-600">RPS dan Soal Ujian</span>
+                    <span class="text-white">RPS dan Soal Ujian</span>
                 </h1>
-                <p class="mt-6 text-lg sm:text-xl text-gray-500 leading-relaxed">
-                    <span class="font-semibold text-gray-700">Program Studi D-III Teknik Komputer</span><br>
-                    <span class="text-primary-600 font-medium">Sekolah Tinggi Teknologi Payakumbuh</span><br class="hidden sm:block">
+                <p class="mt-6 text-lg sm:text-xl text-gray-200 leading-relaxed">
+                    <span class="font-semibold text-white">Program Studi D-III Teknik Komputer</span><br>
+                    <span class="text-white font-medium">Sekolah Tinggi Teknologi Payakumbuh</span><br class="hidden sm:block">
                     Pantau pengumpulan Rencana Pembelajaran Semester (RPS) dan soal ujian dosen dengan notifikasi WhatsApp otomatis.
                 </p>
                 <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -103,17 +104,17 @@
                         @endauth
                     @endif
                 </div>
-                <div class="mt-10 flex items-center justify-center gap-8 text-gray-400">
+                <div class="mt-10 flex items-center justify-center gap-8 text-white">
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-shield-alt text-primary-500"></i>
+                        <i class="fas fa-shield-alt text-white"></i>
                         <span class="text-sm font-medium">Aman</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-bolt text-primary-500"></i>
+                        <i class="fas fa-bolt text-white"></i>
                         <span class="text-sm font-medium">Cepat</span>
                     </div>
                     <div class="flex items-center gap-2">
-                        <i class="fas fa-mobile-alt text-primary-500"></i>
+                        <i class="fas fa-mobile-alt text-white"></i>
                         <span class="text-sm font-medium">Responsif</span>
                     </div>
                 </div>

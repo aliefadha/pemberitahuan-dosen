@@ -3,17 +3,17 @@
         @csrf
 
         <div class="mb-4">
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" placeholder="Nama Lengkap" required autofocus autocomplete="name" />
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" placeholder="Nama Lengkap" required autofocus autocomplete="off" />
             <x-input-error :messages="$errors->get('name')" class="mt-1" />
         </div>
 
         <div class="mb-4">
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" placeholder="Alamat Email" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" placeholder="Alamat Email" required autocomplete="off" />
             <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
         <div class="mb-4">
-            <x-text-input id="no_telepon" name="no_telepon" type="text" class="mt-1 block w-full" :value="old('no_telepon')" placeholder="No. HP (WhatsApp)" autocomplete="tel" />
+            <x-text-input id="no_telepon" name="no_telepon" type="text" class="mt-1 block w-full" :value="old('no_telepon')" placeholder="No. HP (WhatsApp)" autocomplete="off" />
             <x-input-error :messages="$errors->get('no_telepon')" class="mt-1" />
             <p class="mt-1 text-xs text-gray-400">Contoh: 081234567890</p>
         </div>
@@ -30,11 +30,11 @@
 
         <div class="grid grid-cols-2 gap-3 mb-4">
             <div>
-                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" required autocomplete="new-password" />
+                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" required autocomplete="off" />
                 <x-input-error :messages="$errors->get('password')" class="mt-1" />
             </div>
             <div>
-                <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" placeholder="Ulangi Password" required autocomplete="new-password" />
+                <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" placeholder="Ulangi Password" required autocomplete="off" />
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
             </div>
         </div>

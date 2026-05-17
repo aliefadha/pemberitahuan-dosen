@@ -90,8 +90,8 @@ class DokumenController extends Controller
 
     public function submissions(Dokumen $dokumen)
     {
-        $dokumens = Dokumen::with(['submissions.user'])->get()->find($dokumen);
-        $submissions = $dokumen->submissions()->with('user')->get();
+        $dokumens = Dokumen::with(['submissions.user', 'submissions.files'])->get()->find($dokumen);
+        $submissions = $dokumen->submissions()->with(['user', 'files'])->get();
         $totalDosens = User::where('role', 'dosen')->count();
 
         return view('admin.dokumens.submissions', compact('dokumen', 'submissions', 'totalDosens'));

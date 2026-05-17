@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class DokumenSubmission extends Model
 {
     protected $fillable = [
         'dokumen_id',
         'user_id',
-        'file_path',
         'tanggal_submit',
         'status',
         'catatan',
@@ -20,6 +21,17 @@ class DokumenSubmission extends Model
         'tanggal_submit' => 'datetime',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (DokumenSubmission $submission) {
+            foreach ($submission->files as $file) {
+                if (Storage::disk('public')->exists($file->file_path)) {
+                    Storage::disk('public')->delete($file->file_path);
+                }
+            }
+        });
+    }
+
     public function dokumen(): BelongsTo
     {
         return $this->belongsTo(Dokumen::class);
@@ -28,6 +40,11 @@ class DokumenSubmission extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(SubmissionFile::class, 'submission_id');
     }
 
     public function isPending(): bool

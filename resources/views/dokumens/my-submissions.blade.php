@@ -42,9 +42,14 @@
                             <td class="px-6 py-4 text-gray-500">{{ $submission->catatan ?? '-' }}</td>
                             <td class="px-6 py-4 text-gray-600">{{ $submission->tanggal_submit->format('d/m/Y H:i') }}</td>
                             <td class="px-6 py-4">
-                                <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="btn-info btn-sm">
-                                    <i class="fas fa-download mr-1"></i> Download
-                                </a>
+                                @foreach($submission->files as $file)
+                                    <a href="{{ Storage::url($file->file_path) }}" target="_blank" class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-800 hover:underline mb-1 mr-2">
+                                        <i class="fas fa-file-alt text-xs"></i> {{ \Illuminate\Support\Str::limit($file->original_name, 25) }}
+                                    </a>
+                                @endforeach
+                                @if($submission->files->isEmpty())
+                                    <span class="text-gray-400 text-xs">-</span>
+                                @endif
                             </td>
                             <td class="px-6 py-4">
                                 <form action="{{ route('dokumens.submissions.send-whatsapp', $submission) }}" method="POST">

@@ -28,6 +28,10 @@ class DokumenController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
+        if ($existingSubmission) {
+            $existingSubmission->load('files');
+        }
+
         return view('dokumens.submit', compact('dokumen', 'existingSubmission'));
     }
 
@@ -39,38 +43,69 @@ class DokumenController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
-        $request->validate([
-            'file' => [
-                'required',
+        $allowedMimes = $dokumen->tipe_dokumen == 'pdf' ? 'pdf' : 'docx,doc';
+
+        $rules = [
+            'files.*' => [
                 'file',
-                'mimes:'.($dokumen->tipe_dokumen == 'pdf' ? 'pdf' : 'docx,doc'),
+                'mimes:'.$allowedMimes,
                 'max:5120',
             ],
-        ]);
-
-        $file = $request->file('file');
-        $filename = $dokumen->id.'_'.$user->id.'_'.time().'.'.$file->getClientOriginalExtension();
-        $path = $file->storeAs('dokumens', $filename, 'public');
+        ];
 
         if ($existingSubmission) {
-            if ($existingSubmission->file_path && Storage::disk('public')->exists($existingSubmission->file_path)) {
-                Storage::disk('public')->delete($existingSubmission->file_path);
+            $rules['files'] = ['nullable', 'array'];
+        } else {
+            $rules['files'] = ['required', 'array', 'min:1'];
+        }
+
+        $request->validate($rules);
+
+        $uploadedFiles = $request->hasFile('files') ? $request->file('files') : [];
+
+        if ($existingSubmission) {
+            if (! empty($uploadedFiles)) {
+                foreach ($existingSubmission->files as $existingFile) {
+                    if (Storage::disk('public')->exists($existingFile->file_path)) {
+                        Storage::disk('public')->delete($existingFile->file_path);
+                    }
+                }
+                $existingSubmission->files()->delete();
+
+                foreach ($uploadedFiles as $file) {
+                    $filename = $dokumen->id.'_'.$user->id.'_'.time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+                    $path = $file->storeAs('dokumens', $filename, 'public');
+                    $existingSubmission->files()->create([
+                        'file_path' => $path,
+                        'original_name' => $file->getClientOriginalName(),
+                    ]);
+                }
+
+                $existingSubmission->update([
+                    'tanggal_submit' => now(),
+                    'status' => 'pending',
+                    'catatan' => null,
+                ]);
             }
-            $existingSubmission->update([
-                'file_path' => $path,
-                'tanggal_submit' => now(),
-                'status' => 'pending',
-                'catatan' => null,
-            ]);
+
             $message = 'Dokumen berhasil diupdate.';
         } else {
-            DokumenSubmission::create([
+            $submission = DokumenSubmission::create([
                 'dokumen_id' => $dokumen->id,
                 'user_id' => $user->id,
-                'file_path' => $path,
                 'tanggal_submit' => now(),
                 'status' => 'pending',
             ]);
+
+            foreach ($uploadedFiles as $file) {
+                $filename = $dokumen->id.'_'.$user->id.'_'.time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+                $path = $file->storeAs('dokumens', $filename, 'public');
+                $submission->files()->create([
+                    'file_path' => $path,
+                    'original_name' => $file->getClientOriginalName(),
+                ]);
+            }
+
             $message = 'Dokumen berhasil disubmit.';
 
             $admins = User::where('role', 'admin')->get();
@@ -85,7 +120,7 @@ class DokumenController extends Controller
     public function submissions()
     {
         $submissions = auth()->user()->dokumenSubmissions()
-            ->with('dokumen')
+            ->with(['dokumen', 'files'])
             ->latest()
             ->get();
 
@@ -127,6 +162,15 @@ class DokumenController extends Controller
         }
 
         $message .= "📅 Tanggal Pengumpulan: {$submission->tanggal_submit->format('d/m/Y H:i')}\n";
+
+        $submission->load('files');
+        if ($submission->files->count() > 0) {
+            $message .= "\n📎 *File yang dikumpulkan:*\n";
+            foreach ($submission->files as $file) {
+                $message .= "• {$file->original_name}\n";
+            }
+        }
+
         $message .= "\n _Dikirim dari Sistem Pemberitahuan Dosen_";
 
         $result = $whatsAppService->sendMessage($user->no_telepon, $message);

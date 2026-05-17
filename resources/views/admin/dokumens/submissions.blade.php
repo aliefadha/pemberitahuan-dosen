@@ -17,17 +17,35 @@
             @endif
         </div>
         <div class="card-body">
-            <div class="mb-6 space-y-1 text-sm">
-                <p><strong>Judul:</strong> {{ $dokumen->judul }}</p>
-                <p><strong>Deskripsi:</strong> {{ $dokumen->deskripsi ?? '-' }}</p>
-                <p><strong>Tipe:</strong> {{ strtoupper($dokumen->tipe_dokumen) }}</p>
-                <p>
-                    <strong>Deadline:</strong> {{ $dokumen->tanggal_deadline->format('d/m/Y H:i') }}
-                    <span class="badge ml-2 {{ $dokumen->isDeadlinePassed() ? 'badge-secondary' : 'badge-success' }}">
-                        {{ $dokumen->isDeadlinePassed() ? 'Expired' : 'Aktif' }}
-                    </span>
-                </p>
-            </div>
+            <table class="mb-6 text-sm">
+                <tbody>
+                    <tr>
+                        <td class="pb-1 pr-4"><strong>Judul</strong></td>
+                        <td class="pb-1 pr-2"><strong>:</strong></td>
+                        <td class="pb-1">{{ $dokumen->judul }}</td>
+                    </tr>
+                    <tr>
+                        <td class="pb-1 pr-4"><strong>Deskripsi</strong></td>
+                        <td class="pb-1 pr-2"><strong>:</strong></td>
+                        <td class="pb-1">{{ $dokumen->deskripsi ?? '-' }}</td>
+                    </tr>
+                    <tr>
+                        <td class="pb-1 pr-4"><strong>Tipe</strong></td>
+                        <td class="pb-1 pr-2"><strong>:</strong></td>
+                        <td class="pb-1">{{ strtoupper($dokumen->tipe_dokumen) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="pb-1 pr-4"><strong>Deadline</strong></td>
+                        <td class="pb-1 pr-2"><strong>:</strong></td>
+                        <td class="pb-1">
+                            {{ $dokumen->tanggal_deadline->format('d/m/Y H:i') }}
+                            <span class="badge ml-2 {{ $dokumen->isDeadlinePassed() ? 'badge-secondary' : 'badge-success' }}">
+                                {{ $dokumen->isDeadlinePassed() ? 'Expired' : 'Aktif' }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200 text-sm">
@@ -78,9 +96,14 @@
                             </td>
                             <td class="px-4 py-3">
                                 @if($submission)
-                                    <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="btn-info btn-sm">
-                                        <i class="fas fa-download"></i>
-                                    </a>
+                                    @foreach($submission->files as $file)
+                                        <a href="{{ Storage::url($file->file_path) }}" target="_blank" class="btn-info btn-sm mb-1" title="{{ $file->original_name }}">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    @endforeach
+                                    @if($submission->files->isEmpty())
+                                        <span class="text-gray-400 text-xs">-</span>
+                                    @endif
                                 @else
                                     <span class="text-gray-400 text-xs">-</span>
                                 @endif

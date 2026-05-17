@@ -22,9 +22,9 @@
         {{-- Sidebar --}}
         <aside
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-            class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-primary-700 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto"
+            class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-primary-600 transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto"
         >
-            <div class="flex h-16 shrink-0 items-center justify-center border-b border-primary-600">
+            <div class="flex h-16 shrink-0 items-center justify-center border-b border-primary-500">
                 <a href="{{ route('dashboard') }}" class="text-xl font-bold text-white tracking-wide">
                     Pemberitahuan Dosen
                 </a>
@@ -34,44 +34,44 @@
                 {{-- Dashboard --}}
                 <a href="{{ route('dashboard') }}"
                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
-                          {{ request()->routeIs('dashboard') ? 'bg-primary-800 text-white' : 'text-primary-100 hover:bg-primary-600 hover:text-white' }}">
+                           {{ request()->routeIs('dashboard') ? 'bg-primary-700 text-white' : 'text-primary-50 hover:bg-primary-500 hover:text-white' }}">
                     <i class="fas fa-tachometer-alt w-5 text-center"></i>
                     <span>Dashboard</span>
                 </a>
 
                 @if(auth()->user()->isAdmin())
                 <div class="pt-4 pb-1">
-                    <p class="px-3 text-xs font-semibold uppercase tracking-wider text-primary-300">Admin</p>
+                    <p class="px-3 text-xs font-semibold uppercase tracking-wider text-primary-200">Admin</p>
                 </div>
 
                 <a href="{{ route('admin.users.index') }}"
                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
-                          {{ request()->routeIs('admin.users.*') ? 'bg-primary-800 text-white' : 'text-primary-100 hover:bg-primary-600 hover:text-white' }}">
+                           {{ request()->routeIs('admin.users.*') ? 'bg-primary-700 text-white' : 'text-primary-50 hover:bg-primary-500 hover:text-white' }}">
                     <i class="fas fa-users w-5 text-center"></i>
                     <span>Kelola User</span>
                 </a>
 
                 <a href="{{ route('admin.dokumens.index') }}"
                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
-                          {{ request()->routeIs('admin.dokumens.*') ? 'bg-primary-800 text-white' : 'text-primary-100 hover:bg-primary-600 hover:text-white' }}">
+                          {{ request()->routeIs('admin.dokumens.*') ? 'bg-primary-700 text-white' : 'text-primary-50 hover:bg-primary-500 hover:text-white' }}">
                     <i class="fas fa-file-alt w-5 text-center"></i>
                     <span>Kelola Dokumen</span>
                 </a>
 
                 <a href="{{ route('admin.whatsapp.index') }}"
                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
-                          {{ request()->routeIs('admin.whatsapp.*') ? 'bg-primary-800 text-white' : 'text-primary-100 hover:bg-primary-600 hover:text-white' }}">
+                          {{ request()->routeIs('admin.whatsapp.*') ? 'bg-primary-700 text-white' : 'text-primary-50 hover:bg-primary-500 hover:text-white' }}">
                     <i class="fab fa-whatsapp w-5 text-center"></i>
                     <span>WhatsApp</span>
                 </a>
 
                 <div class="pt-4 pb-1">
-                    <p class="px-3 text-xs font-semibold uppercase tracking-wider text-primary-300">Notifikasi</p>
+                    <p class="px-3 text-xs font-semibold uppercase tracking-wider text-primary-200">Notifikasi</p>
                 </div>
 
                 <a href="{{ route('notifications.index') }}"
                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
-                          {{ request()->routeIs('notifications.*') ? 'bg-primary-800 text-white' : 'text-primary-100 hover:bg-primary-600 hover:text-white' }}">
+                          {{ request()->routeIs('notifications.*') ? 'bg-primary-700 text-white' : 'text-primary-50 hover:bg-primary-500 hover:text-white' }}">
                     <i class="fas fa-bell w-5 text-center"></i>
                     <span>Notifikasi</span>
                 </a>
@@ -79,12 +79,12 @@
 
                 @if(auth()->user()->isDosen())
                 <div class="pt-4 pb-1">
-                    <p class="px-3 text-xs font-semibold uppercase tracking-wider text-primary-300">Menu</p>
+                    <p class="px-3 text-xs font-semibold uppercase tracking-wider text-primary-200">Menu</p>
                 </div>
 
                 <a href="{{ route('dokumens.index') }}"
                    class="group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors
-                          {{ request()->routeIs('dokumens.*') ? 'bg-primary-800 text-white' : 'text-primary-100 hover:bg-primary-600 hover:text-white' }}">
+                          {{ request()->routeIs('dokumens.*') ? 'bg-primary-700 text-white' : 'text-primary-50 hover:bg-primary-500 hover:text-white' }}">
                     <i class="fas fa-file-alt w-5 text-center"></i>
                     <span>Dokumen</span>
                 </a>
@@ -92,8 +92,8 @@
             </nav>
 
             {{-- Sidebar footer --}}
-            <div class="border-t border-primary-600 p-4">
-                <p class="text-xs text-primary-300 text-center">&copy; {{ date('Y') }} Pemberitahuan Dosen</p>
+            <div class="border-t border-primary-500 p-4">
+                <p class="text-xs text-primary-200 text-center">&copy; {{ date('Y') }} Pemberitahuan Dosen</p>
             </div>
         </aside>
 

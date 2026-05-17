@@ -5,18 +5,13 @@
         @csrf
 
         <div class="mb-5">
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" placeholder="Masukkan Alamat Email..." required autofocus autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" placeholder="Masukkan Alamat Email..." required autofocus autocomplete="off" />
             <x-input-error :messages="$errors->get('email')" class="mt-1" />
         </div>
 
         <div class="mb-5">
-            <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" required autocomplete="current-password" />
+            <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" placeholder="Password" required autocomplete="off" />
             <x-input-error :messages="$errors->get('password')" class="mt-1" />
-        </div>
-
-        <div class="mb-5 flex items-center gap-2">
-            <input type="checkbox" id="remember_me" name="remember" class="rounded border-gray-300 text-primary-600 shadow-sm focus:ring-primary-500">
-            <label for="remember_me" class="text-sm text-gray-600">Ingat Saya</label>
         </div>
 
         <button type="submit" class="btn-primary w-full">
