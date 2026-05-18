@@ -121,6 +121,76 @@
         </div>
     </div>
 
+    {{-- Rekap Dokumen & Submission --}}
+    <div class="mt-6 card">
+        <div class="card-header">Rekap Dokumen dan Submission</div>
+        <div class="card-body !p-0">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Judul Dokumen</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Tipe</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Deadline</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Progress</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 bg-white">
+                        @forelse($rekapDokumens as $dokumen)
+                            @php
+                                $percentage = $stats['totalDosens'] > 0 ? round(($dokumen->submissions_count / $stats['totalDosens']) * 100) : 0;
+                            @endphp
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-gray-900">{{ $dokumen->judul }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="badge {{ $dokumen->tipe_dokumen == 'pdf' ? 'badge-danger' : 'badge-info' }}">
+                                        {{ strtoupper($dokumen->tipe_dokumen) }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-gray-700">{{ $dokumen->tanggal_deadline->format('d/m/Y H:i') }}</div>
+                                    <span class="badge mt-1 {{ $dokumen->isDeadlinePassed() ? 'badge-secondary' : 'badge-success' }}">
+                                        {{ $dokumen->isDeadlinePassed() ? 'Expired' : 'Aktif' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 min-w-[200px]">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                            <div class="bg-primary-500 h-2 rounded-full" style="width: {{ $percentage }}%"></div>
+                                        </div>
+                                        <span class="text-xs text-gray-600 font-medium whitespace-nowrap">{{ $dokumen->submissions_count }} / {{ $stats['totalDosens'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if($percentage == 100)
+                                        <span class="badge badge-success">Lengkap</span>
+                                    @elseif($dokumen->isDeadlinePassed())
+                                        <span class="badge badge-danger">Ditutup</span>
+                                    @else
+                                        <span class="badge badge-warning">Proses</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="{{ route('admin.dokumens.submissions', $dokumen) }}" class="btn-primary btn-sm">
+                                        Lihat Detail <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-400">
+                                    Belum ada dokumen.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     @else
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <div class="card">

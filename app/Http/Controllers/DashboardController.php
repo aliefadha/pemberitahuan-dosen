@@ -28,8 +28,9 @@ class DashboardController extends Controller
                 ->get();
 
             $activeDokumens = Dokumen::where('tanggal_deadline', '>', now())->get();
+            $rekapDokumens = Dokumen::withCount('submissions')->latest()->get();
 
-            return view('dashboard', compact('stats', 'recentSubmissions', 'activeDokumens'));
+            return view('dashboard', compact('stats', 'recentSubmissions', 'activeDokumens', 'rekapDokumens'));
         } else {
             $stats = [
                 'totalDokumens' => Dokumen::count(),

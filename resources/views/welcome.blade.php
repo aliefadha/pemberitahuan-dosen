@@ -124,9 +124,7 @@
 
     {{-- About Prodi Section --}}
     <section id="tentang-prodi" class="py-20 bg-gray-50/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center items-center justify-center">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 border border-primary-100 text-primary-700 text-sm font-semibold mb-4">
                         <i class="fas fa-university text-xs"></i>
                         Tentang Program Studi
@@ -141,7 +139,7 @@
                     <p class="text-gray-500 leading-relaxed mb-6">
                         Program studi ini bertujuan untuk menghasilkan ahli madya teknik yang mampu mengembangkan ilmu yang dimiliki, menyelesaikan permasalahan komputer, serta memiliki dasar ilmu yang cukup untuk melanjutkan studi pada jenjang yang lebih tinggi.
                     </p>
-                    <div class="flex flex-wrap gap-3">
+                    <div class="flex gap-3 w-full mx-auto justify-center">
                         <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-lg border border-gray-200 text-sm text-gray-600">
                             <i class="fas fa-map-marker-alt text-primary-500 text-xs"></i>
                             Payakumbuh, Sumatera Barat
@@ -150,35 +148,7 @@
                             <i class="fas fa-globe text-primary-500 text-xs"></i>
                             sttpyk.ac.id
                         </span>
-                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-                        <div class="icon-circle bg-primary-50 text-primary-600 mx-auto mb-3">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-900 text-sm">Operator & Programmer</h4>
-                    </div>
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-                        <div class="icon-circle bg-emerald-50 text-emerald-600 mx-auto mb-3">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-900 text-sm">Teknisi Komputer</h4>
-                    </div>
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-                        <div class="icon-circle bg-amber-50 text-amber-600 mx-auto mb-3">
-                            <i class="fas fa-network-wired"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-900 text-sm">Jaringan Komputer</h4>
-                    </div>
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 text-center">
-                        <div class="icon-circle bg-violet-50 text-violet-600 mx-auto mb-3">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <h4 class="font-semibold text-gray-900 text-sm">Robotika</h4>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -257,63 +227,6 @@
         </div>
     </section>
 
-    {{-- Footer --}}
-    <footer class="bg-gray-900 text-gray-300 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-600">
-                            <i class="fas fa-bell text-white text-sm"></i>
-                        </div>
-                        <span class="font-bold text-xl text-white">Monitoring RPS & Soal Ujian</span>
-                    </div>
-                    <p class="text-sm text-gray-400 leading-relaxed">
-                        Sistem monitoring pengumpulan Rencana Pembelajaran Semester (RPS) dan soal ujian untuk dosen Program Studi D-III Teknik Komputer.
-                    </p>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Tautan Cepat</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#tentang-prodi" class="hover:text-white transition">Tentang Prodi</a></li>
-                        <li><a href="#fitur" class="hover:text-white transition">Fitur</a></li>
-                        <li><a href="#cara-kerja" class="hover:text-white transition">Cara Kerja</a></li>
-                        @if (Route::has('login'))
-                            <li><a href="{{ route('login') }}" class="hover:text-white transition">Login</a></li>
-                        @endif
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-semibold text-white mb-4">Kontak Kami</h4>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-university text-primary-500 mt-0.5"></i>
-                            <span>Sekolah Tinggi Teknologi Payakumbuh</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-map-marker-alt text-primary-500 mt-0.5"></i>
-                            <span>Jl. Khatib Sulaiman, Sawah Padang, Payakumbuh Selatan, Kota Payakumbuh, Sumatera Barat</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-phone text-primary-500 mt-0.5"></i>
-                            <span>(+62) 823-8350-1827</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-envelope text-primary-500 mt-0.5"></i>
-                            <span>admin@sttpyk.ac.id</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fas fa-globe text-primary-500 mt-0.5"></i>
-                            <a href="https://www.sttpyk.ac.id" target="_blank" class="hover:text-white transition">www.sttpyk.ac.id</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="mt-10 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
-                &copy; {{ date('Y') }} Program Studi D-III Teknik Komputer, Sekolah Tinggi Teknologi Payakumbuh.
-            </div>
-        </div>
-    </footer>
 
     <script>
         const btn = document.getElementById('mobile-menu-btn');
