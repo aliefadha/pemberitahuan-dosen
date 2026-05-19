@@ -55,7 +55,7 @@ class SubmissionStatusNotification extends Notification
         $statusEmoji = $this->status === 'accepted' ? '✅' : '❌';
         $statusText = $this->status === 'accepted' ? 'DITERIMA' : 'DITOLAK';
 
-        $message = "{$statusEmoji} *Pengumpulan {$statusText}*\n\n";
+        $message = "{$statusEmoji} *Assalamualaikum warahmatullahi wabarakatuh Bapak/Ibu semoga selalu berada dalam lindungan Allah SWT, Terdapat Pengumpulan yang {$statusText}*\n\n";
         $message .= "Dokumen: {$this->dokumen->judul}\n\n";
 
         if ($this->catatan) {

@@ -42,11 +42,11 @@ class NewSubmissionNotification extends Notification
 
     public function toWhatsApp(object $notifiable): array
     {
-        $message = "📋 *Pengumpulan Baru*\n\n";
+        $message = "📋 *Assalamualaikum warahmatullahi wabarakatuh Bapak/Ibu semoga selalu berada dalam lindungan Allah SWT, Terdapat Pengumpulan Baru*\n\n";
         $message .= "Dosen: {$this->dosen->name}\n";
         $message .= "Dokumen: {$this->dokumen->judul}\n";
         $message .= 'Waktu: '.now()->format('d/m/Y H:i')."\n\n";
-        $message .= 'Silakan periksa di aplikasi.';
+        $message .= 'Silakan login ke aplikasi untuk melihat dokumen yang telah di submit. Terima kasih.';
 
         return [
             'phone' => $notifiable->no_telepon,

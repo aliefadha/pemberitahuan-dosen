@@ -16,7 +16,6 @@
         <div class="rounded-xl bg-white shadow-2xl">
             <div class="px-8 py-10">
                 <div class="mb-6 text-center">
-                    <h1 class="text-2xl font-bold text-gray-900">{{ config('app.name', 'Pemberitahuan Dosen') }}</h1>
                     @if(isset($title))
                         <p class="mt-2 text-sm text-gray-500">{{ $title }}</p>
                     @endif
