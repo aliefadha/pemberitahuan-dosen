@@ -49,10 +49,10 @@ class DokumenNotification extends Notification
     public function toWhatsApp(object $notifiable): array
     {
         $message = match ($this->type) {
-            'created' => "📄 *Assalamualaikum warahmatullahi wabarakatuh Bapak/Ibu semoga selalu berada dalam lindungan Allah SWT, Terdapat Dokumen Baru*\n\nJudul: {$this->dokumen->judul}\n\nDeadline: {$this->dokumen->tanggal_deadline->format('d/m/Y H:i')}\n\nSilakan login ke aplikasi untuk men-submit dokumen Anda. Terima kasih.",
-            'updated' => "📝 *Assalamualaikum warahmatullahi wabarakatuh Bapak/Ibu semoga selalu berada dalam lindungan Allah SWT, Terdapat Perubahan Dokumen*\n\nJudul: {$this->dokumen->judul}\n\nDeadline: {$this->dokumen->tanggal_deadline->format('d/m/Y H:i')}\n\nSilakan periksa dokumen terkait. Terima kasih.",
-            'deleted' => "🗑️ *Assalamualaikum warahmatullahi wabarakatuh Bapak/Ibu semoga selalu berada dalam lindungan Allah SWT, Terdapat Perubahan Dokumen*\n\nDokumen '{$this->dokumen->judul}' telah dihapus oleh admin. Terima kasih.",
-            default => "Assalamualaikum warahmatullahi wabarakatuh Bapak/Ibu semoga selalu berada dalam lindungan Allah SWT, Ada perubahan pada dokumen: {$this->dokumen->judul}",
+            'created' => "📄 *Assalamualaikum Bapak/Ibu, semoga selalu berada dalam lindungan Allah SWT, Terdapat Dokumen Baru*\n\nJudul: {$this->dokumen->judul}\n\nDeadline: {$this->dokumen->tanggal_deadline->format('d/m/Y H:i')}\n\nSilakan login ke aplikasi untuk men-submit dokumen Anda. Terima kasih.",
+            'updated' => "📝 *Assalamualaikum Bapak/Ibu, semoga selalu berada dalam lindungan Allah SWT, Terdapat Perubahan Dokumen*\n\nJudul: {$this->dokumen->judul}\n\nDeadline: {$this->dokumen->tanggal_deadline->format('d/m/Y H:i')}\n\nSilakan periksa dokumen terkait. Terima kasih.",
+            'deleted' => "🗑️ *Assalamualaikum Bapak/Ibu, semoga selalu berada dalam lindungan Allah SWT, Terdapat Perubahan Dokumen*\n\nDokumen '{$this->dokumen->judul}' telah dihapus oleh admin. Terima kasih.",
+            default => "Assalamualaikum Bapak/Ibu, semoga selalu berada dalam lindungan Allah SWT, Ada perubahan pada dokumen: {$this->dokumen->judul}",
         };
 
         return [

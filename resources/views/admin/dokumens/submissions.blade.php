@@ -169,7 +169,7 @@
     @push('scripts')
     <script>
         function sendBatchWhatsApp() {
-            const message = `Halo! untuk segera mengumpulkan dokumen "{{ $dokumen->judul }}" sebelum deadline. Mohon segera upload dokumen Anda. Terima kasih.`;
+            const message = `*Assalamualaikum Bapak/Ibu, semoga selalu berada dalam lindungan Allah SWT.*\n\nMohon untuk segera mengumpulkan dokumen "{{ $dokumen->judul }}" sebelum deadline. Silakan login ke aplikasi untuk men-submit dokumen Anda. Terima kasih.`;
 
             const recipients = [];
             @foreach($allDosen as $dosen)
